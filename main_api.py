@@ -1,33 +1,34 @@
 import logging
-
-import dotenv
+from dotenv import load_dotenv
 
 from interfaces.api import FlaskAgent
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
 def main():
     """
-    Main entry point for the Heuman Agent Framework.
+    Entry point for the Heuman Agent Framework.
     Runs the Flask API agent.
-    NOT FOR PRODUCTION
+    WARNING: This is not intended for production environments.
     """
     try:
-        # Load environment variables
-        dotenv.load_dotenv()
+        load_dotenv()
 
-        # Initialize and run Flask agent
         logger.info("Starting Flask API agent...")
         flask_agent = FlaskAgent()
         flask_agent.run(host="0.0.0.0", port=5005)
 
     except KeyboardInterrupt:
-        logger.info("Application stopped by user")
+        logger.info("Application stopped by user.")
     except Exception as e:
-        logger.error(f"Fatal error: {str(e)}")
+        logger.error(f"Fatal error: {e}")
         raise
 
 
