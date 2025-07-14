@@ -1,7 +1,7 @@
 [project]
-name = "heurist-agent-framework"
+name = "cinna-agent-framework"
 version = "0.1.0"
-description = "Heurist Agent Framework"
+description = "Cinna Agent Framework"
 requires-python = ">=3.11"
 readme = "README.md"
 dependencies = [
