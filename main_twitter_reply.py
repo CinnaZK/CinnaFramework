@@ -1,23 +1,21 @@
 import asyncio
-
-import dotenv
+from dotenv import load_dotenv
 
 from interfaces.twitter_reply import TwitterReplyAgent
 
 
 async def main():
-    dotenv.load_dotenv()
+    """Entry point for Twitter Reply Agent."""
+    load_dotenv()
 
-    # Initialize agent
     agent = TwitterReplyAgent()
 
     try:
         print("Starting Twitter Reply Agent...")
-        # Start monitoring in background thread
         agent.start_monitoring()
-        print("Monitoring thread started")
+        print("Monitoring thread started.")
 
-        print("Starting workers... Press Ctrl+C to exit")
+        print("Starting workers... Press Ctrl+C to exit.")
         await agent.run_workers(num_workers=2)
 
     except KeyboardInterrupt:
