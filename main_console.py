@@ -12,7 +12,7 @@ async def main():
     # server_url = "http://localhost:8000/sse"
     # await agent.initialize(server_url=server_url)
 
-    print("Welcome to the Heurist Agent Console!")
+    print("Welcome to the Cinna Agent Console!")
     print("Type 'exit' to quit")
     print("-" * 50)
 
