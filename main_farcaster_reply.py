@@ -1,27 +1,34 @@
 import asyncio
 import logging
+from dotenv import load_dotenv
 
 from interfaces.farcaster_reply import FarcasterReplyAgent
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
 async def main():
     """
-    Main entry point for the Heuman Agent Framework.
-    Runs the Farcaster agent for automated casting.
+    Entry point for the Heuman Agent Framework.
+    Runs the Farcaster Reply agent for automated replies.
     """
     try:
-        # Initialize and run Farcaster agent
-        logger.info("Starting Farcaster agent...")
-        agent = FarcasterReplyAgent()
-        await agent.start()
+        load_dotenv()
+
+        logger.info("Starting Farcaster Reply agent...")
+        farcaster_agent = FarcasterReplyAgent()
+        await farcaster_agent.start()
+
     except KeyboardInterrupt:
-        logger.info("Application stopped by user")
+        logger.info("Application stopped by user.")
     except Exception as e:
-        logger.error(f"Fatal error: {str(e)}")
+        logger.error(f"Fatal error: {e}")
         raise
 
 
