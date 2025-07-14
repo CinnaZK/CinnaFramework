@@ -1,47 +1,46 @@
 import logging
-
-import dotenv
+from dotenv import load_dotenv
 
 from agents.core_agent import CoreAgent
 from interfaces.telegram import TelegramAgent
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
-def run_telegram(telegram_agent):
-    """Run the Telegram agent"""
+def run_telegram(agent: TelegramAgent):
+    """Run the Telegram agent."""
     try:
         logger.info("Starting Telegram agent...")
-        telegram_agent.run()
+        agent.run()
     except Exception as e:
-        logger.error(f"Telegram agent error: {str(e)}")
+        logger.error(f"Telegram agent error: {e}")
 
 
 def main():
     """
-    Main entry point for the Heuman Agent Framework.
-    Demonstrates both shared and standalone usage.
+    Entry point for the Heuman Agent Framework.
     """
     try:
         # Load environment variables
-        dotenv.load_dotenv()
+        load_dotenv()
 
-        # Example 1: Standalone agent (default)
-        # telegram_agent = TelegramAgent()  # Uses its own CoreAgent instance
-
-        # Example 2: Shared core agent (commented out)
+        # Instantiate shared CoreAgent
         core_agent = CoreAgent()
-        telegram_agent = TelegramAgent(core_agent)  # Uses shared core_agent
+        telegram_agent = TelegramAgent(core_agent)
 
-        # Run the agent
+        # Run Telegram integration
         run_telegram(telegram_agent)
 
     except KeyboardInterrupt:
-        logger.info("Application stopped by user")
+        logger.info("Application stopped by user.")
     except Exception as e:
-        logger.error(f"Fatal error: {str(e)}")
+        logger.error(f"Fatal error: {e}")
         raise
 
 
