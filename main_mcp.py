@@ -30,12 +30,12 @@ class SimpleMCPClient:
         self.available_tools = []
 
         # LLM configuration
-        self.base_url = os.getenv("HEURIST_BASE_URL")
-        self.api_key = os.getenv("HEURIST_API_KEY")
+        self.base_url = os.getenv("CINNA_BASE_URL")
+        self.api_key = os.getenv("CINNA_API_KEY")
         self.model_id = os.getenv("LARGE_MODEL_ID")
 
         if not self.api_key:
-            logger.warning("HEURIST_API_KEY environment variable not set. LLM functionality will not work.")
+            logger.warning("CINNA_API_KEY environment variable not set. LLM functionality will not work.")
 
     async def initialize(self):
         """Initialize the MCP client and fetch available tools"""
