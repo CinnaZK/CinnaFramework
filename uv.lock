@@ -1375,7 +1375,7 @@ wheels = [
 ]
 
 [[package]]
-name = "heurist-agent-framework"
+name = "cinna-agent-framework"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
