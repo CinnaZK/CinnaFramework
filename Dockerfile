@@ -1,44 +1,42 @@
-# Base image pinned by digest for security and consistency
+# Imagen base fijada por digest para seguridad y consistencia
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim@sha256:5c8edeb8b5644b618882e06ddaa8ddf509dcd1aa7d08fedac7155106116a9a9e
 
-# Build-time Git commit SHA capture for debugging/versioning
+# Capturar el commit SHA para fines de depuración y versionado
 ARG GITHUB_SHA=unknown
-ENV GITHUB_SHA=${GITHUB_SHA}
+ENV GITHUB_SHA=$GITHUB_SHA
 
-# Environment configurations for UV and Python paths
+# Configuración de entorno para Python y UV
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     PATH="/app/mesh/.venv/bin:$PATH"
 
-# Install system-level dependencies
+# Instalar dependencias de sistema necesarias
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && \
-    apt-get install -yqq --no-install-recommends \
-        curl \
-        git \
-        libpq-dev \
-        gcc \
-        libc6-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    libpq-dev \
+    gcc \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Definir el directorio de trabajo
 WORKDIR /app
 
-# Copy dependency management files early for caching
-COPY mesh/pyproject.toml mesh/uv.lock ./mesh/
+# Copiar archivos de dependencias primero para cachear correctamente las capas
+COPY mesh/pyproject.toml mesh/uv.lock /app/mesh/
 
-# Install Python dependencies without installing project code yet
+# Instalar dependencias de Python (sin instalar el código del proyecto aún)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    cd mesh && \
-    uv sync --frozen --no-install-project --no-dev
+    cd mesh && uv sync --frozen --no-install-project --no-dev
 
-# Copy entrypoint script and make it executable
+# Copiar el script de entrypoint y hacerlo ejecutable
 COPY .docker/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Copy full application source
-COPY . .
+# Copiar todo el código del proyecto
+COPY . /app
 
-# Set entrypoint script
+# Definir el entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
